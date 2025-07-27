@@ -19,17 +19,39 @@ namespace Server.Controllers
             _userService = userService;
             _tokenService = tokenService;
         }
-
+        private bool IsValidPassword(string password)
+        {
+            if (string.IsNullOrWhiteSpace(password)) return false;
+            if (password.Length < 8) return false; // Minimum length
+            if (!password.Any(char.IsUpper)) return false; // At least one uppercase
+            if (!password.Any(char.IsLower)) return false; // At least one lowercase
+            if (!password.Any(char.IsDigit)) return false; // At least one digit
+            //if (!password.Any(ch => !char.IsLetterOrDigit(ch))) return false; // At least one special character
+            return true;
+        }
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
+            if (!IsValidPassword(request.Password))
+                return BadRequest("Password does not meet security requirements.");
+
             var user = await _userService.GetByEmailAsync(request.Email);
-            if (user == null || user.PasswordHash != request.Password)
+            if (user == null || !VerifyPassword(request.Password, user.PasswordHash, user.PasswordSalt))
                 return Unauthorized("Invalid credentials");
 
             var token = _tokenService.CreateToken(user);
             return Ok(new { token });
         }
+        //[HttpPost("login")]
+        //public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        //{
+        //    var user = await _userService.GetByEmailAsync(request.Email);
+        //    if (user == null || user.PasswordHash != request.Password)
+        //        return Unauthorized("Invalid credentials");
+
+        //    var token = _tokenService.CreateToken(user);
+        //    return Ok(new { token });
+        //}
 
         // דוגמת פונקציה לאימות סיסמה (Hash + Salt)
         private bool VerifyPassword(string password, string? storedHash, string? storedSalt)

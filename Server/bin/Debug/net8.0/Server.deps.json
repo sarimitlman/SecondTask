@@ -1161,7 +1161,10 @@
           "Microsoft.EntityFrameworkCore.SqlServer": "9.0.7"
         },
         "runtime": {
-          "BL.dll": {}
+          "BL.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       },
       "Dal/1.0.0": {
@@ -1171,7 +1174,10 @@
           "Microsoft.Extensions.Configuration": "9.0.7"
         },
         "runtime": {
-          "Dal.dll": {}
+          "Dal.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       }
     }

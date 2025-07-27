@@ -12,7 +12,6 @@ namespace BL.Api
         IBLClient Client { get; }
         IBLInvoice Invoice { get; }
         IBLPayment Payment { get; }
-        //IBLEmailCampaign EmailCampaign { get; }
         IBLProposal Proposal { get; }
         IBLTransaction Transaction { get; }
     }
